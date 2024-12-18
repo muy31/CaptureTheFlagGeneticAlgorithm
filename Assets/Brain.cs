@@ -20,6 +20,7 @@ public class Brain
 
         Layers = new Layer[numLayers + 2];
         Layers[0] = new Layer(numI); // Input layer
+        Layers[0].AssignRandomWeights();
 
         for (int i = 1; i < numLayers + 1; i++)
         {
@@ -54,7 +55,7 @@ public class Brain
 
     public Brain cloneAndMutate()
     {
-        float mut_degree = UnityEngine.Random.Range(0f, 2f);
+        float mut_degree = 3f;
         float weight_mut_threshold = UnityEngine.Random.Range(0f, 0.3f);
 
         Layer[] new_layers = new Layer[NumHiddenLayers + 2];
@@ -97,7 +98,7 @@ public static class _Function
 {
     public static float Sigmoid(double x)
     {
-        return (float) Math.Tanh(x);
+        return (float) Math.Tanh(x / 5);
     }
 
     public static float[] OutputFinalizationFunction(float[] values)

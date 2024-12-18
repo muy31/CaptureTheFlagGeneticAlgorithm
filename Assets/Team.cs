@@ -1,7 +1,4 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
-using static UnityEditor.Rendering.CameraUI;
 
 public class Team : MonoBehaviour
 {
@@ -23,6 +20,16 @@ public class Team : MonoBehaviour
     public bool blueTeam;
 
     public float teamPlayScore = 0;
+
+    public int getNumInputs()
+    {
+        return numInputs;
+    }
+
+    public int getNumOutputs()
+    {
+        return agentBehaviors.Length * requiredOutputsPerAgent;
+    }
 
     private void Start()
     {

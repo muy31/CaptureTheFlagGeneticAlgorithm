@@ -69,11 +69,14 @@ public class Layer
     {
         for (int i = 0; i < Values.Length; i++)
         {
-            for (int j = 0; j < PreviousLayer.Values.Length; j++)
+            if (Weights != null)
             {
-                Weights[i, j] = Random.Range(-2f, 2f);
+                for (int j = 0; j < PreviousLayer.Values.Length; j++)
+                {
+                    Weights[i, j] = Random.Range(-2f, 2f);
+                }
             }
-            Biases[i] = Random.Range(-8f, 8f);
+            Biases[i] = Random.Range(-5f, 5f);
         }
     }
 
@@ -93,7 +96,7 @@ public class Layer
             }
             if (Random.Range(0f, 1f) < threshold)
             {
-                Biases[i] += Random.Range(-4f, 4f) * mut_degree;
+                Biases[i] += Random.Range(-1f, 1f) * mut_degree;
             }
         }
     }

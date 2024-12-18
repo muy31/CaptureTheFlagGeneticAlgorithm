@@ -16,12 +16,13 @@ public class GameManager : MonoBehaviour
 
     public float maxGameTime = 10f;  // 15 seconds until a winner is forcefully chosen
     public int saveRate = 5; // Number of episodes before we save the winning brain
-    private int episode = 0;
-    private float currentGameTime = 0f;
+    public int episode = 0;
+    public float currentGameTime = 0f;
     public Brain winningBrain = null;
     public bool grabFromFile = false;
     public DataSaver dataSaver;
     public TimeScaleSetter timeScaleSetter;
+    public TextDebug texter;
 
     private void Awake()
     {
@@ -64,7 +65,8 @@ public class GameManager : MonoBehaviour
         if (episode >= saveRate)
         {
             episode = 0;
-            dataSaver.SaveFile(winningBrain);
+            string fName = dataSaver.SaveFile(winningBrain);
+            texter.UpdateText("Saved a trained brain to: " + fName);
         }
 
         // Move base positions
@@ -78,13 +80,13 @@ public class GameManager : MonoBehaviour
         currentGameTime = 0f;
     }
 
-    void placeBases()
+    public void placeBases()
     {
         blueBase.localPosition = new Vector3(Random.Range(-maxBasePosition.x, maxBasePosition.x), Random.Range(-maxBasePosition.y, maxBasePosition.y));
         redBase.localPosition = new Vector3(Random.Range(-maxBasePosition.x, maxBasePosition.x), Random.Range(-maxBasePosition.y, maxBasePosition.y));
     }
 
-    void placeFlags()
+    public void placeFlags()
     {
         Vector3 candidateBlue = new Vector3(Random.Range(-maxFlagPosition.x, maxFlagPosition.x), Random.Range(-maxFlagPosition.y, maxFlagPosition.y));
         Vector3 candidateRed = new Vector3(Random.Range(-maxFlagPosition.x, maxFlagPosition.x), Random.Range(-maxFlagPosition.y, maxFlagPosition.y));
@@ -155,14 +157,14 @@ public class GameManager : MonoBehaviour
 
             if (redHoldScore > blueHoldScore)
             {
-                Debug.Log("Team red won since they were holding more flags! RED: " + redHoldScore + " BLUE: " + blueHoldScore);
+                texter.UpdateText("Team red won since they were holding more flags! RED: " + redHoldScore + " BLUE: " + blueHoldScore);
                 Brain newBrain = teamRed.teamBrain.cloneAndMutate();
                 teamBlue.teamBrain = newBrain;
                 winningBrain = teamRed.teamBrain;
             }
             else if (blueHoldScore > redHoldScore)
             {
-                Debug.Log("Team blue won since they were holding more flags! RED: " + redHoldScore + " BLUE: " + blueHoldScore);
+                texter.UpdateText("Team blue won since they were holding more flags! RED: " + redHoldScore + " BLUE: " + blueHoldScore);
                 Brain newBrain = teamBlue.teamBrain.cloneAndMutate();
                 teamRed.teamBrain = newBrain;
                 winningBrain = teamBlue.teamBrain;
@@ -178,7 +180,7 @@ public class GameManager : MonoBehaviour
                 if (redScore > blueScore)
                 {
                     // Red won, so blue is replaced
-                    Debug.Log("Red Distance: " + redDist + " Blue Distance: " + blueDist);
+                    texter.UpdateText("Red Distance: " + redDist + " Blue Distance: " + blueDist);
                     Debug.Log("Team red won by combined score! RED: " + redScore + " BLUE: " + blueScore);
                     Brain newBrain = teamRed.teamBrain.cloneAndMutate();
                     teamBlue.teamBrain = newBrain;
@@ -186,7 +188,7 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Red Distance: " + redDist + " Blue Distance: " + blueDist);
+                    texter.UpdateText("Red Distance: " + redDist + " Blue Distance: " + blueDist);
                     Debug.Log("Team blue won by combined score! RED: " + redScore + " BLUE: " + blueScore);
                     Brain newBrain = teamBlue.teamBrain.cloneAndMutate();
                     teamRed.teamBrain = newBrain;

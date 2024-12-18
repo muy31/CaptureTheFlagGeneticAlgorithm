@@ -7,7 +7,7 @@ public class DataSaver : MonoBehaviour
 {
     public string loadFileName;
 
-    public void SaveFile(Brain br)
+    public string SaveFile(Brain br)
     {
         string filename = "/save" + DateTime.Now.Second + ".dat";
         Debug.Log("Attempting to save network to " +Application.persistentDataPath+ filename);
@@ -20,6 +20,8 @@ public class DataSaver : MonoBehaviour
         BinaryFormatter bf = new BinaryFormatter();
         bf.Serialize(file, br);
         file.Close();
+
+        return filename;
     }
 
     public Brain LoadFile()

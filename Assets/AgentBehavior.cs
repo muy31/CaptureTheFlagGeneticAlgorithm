@@ -62,7 +62,7 @@ public class AgentBehavior : MonoBehaviour
 
     void MoveToBase()
     {
-        // myRb.isKinematic = true;
+        myRb.linearVelocity = Vector3.zero;
         Vector3 moveVec = (homeBase - transform.position);
         gameObject.transform.localPosition += moveVec.normalized * speed * Time.deltaTime; //  Forcefully move towards base
         // Push towards base
